@@ -1,5 +1,8 @@
 # Simple Addon Manager
 
+- Created by LibertyForce, All rights goes to him.
+- Edited by Insane Black Rock Shooter
+
 **Handling your addon collection is now easier then ever:**
 
 - All addons in one list - no more looking through endless pages that load way to slow.
