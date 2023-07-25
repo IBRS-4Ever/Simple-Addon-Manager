@@ -252,7 +252,7 @@ function Menu.Setup()
 		local t = p:Add( "RichText" )
 		t:Dock( TOP )
 		t:InsertColorChange( 0, 0, 0, 255 )
-		t:AppendText( "https://github.com/LibertyForce-Gmod/Simple-Addon-Manager/releases/latest" )
+		t:AppendText( "https://github.com/IBRS-4Ever/Simple-Addon-Manager/releases/latest" )
 		t:SetVerticalScrollbarEnabled( false )
 		
 		local b = p:Add( "DButton" )
@@ -261,7 +261,7 @@ function Menu.Setup()
 		b:SetWidth( 180 )
 		b:SetHeight( 20 )
 		b:SetText( "#SAM.CopyURL" )
-		b.DoClick = function() SetClipboardText( "https://github.com/LibertyForce-Gmod/Simple-Addon-Manager/releases/latest" ) end
+		b.DoClick = function() SetClipboardText( "https://github.com/IBRS-4Ever/Simple-Addon-Manager/releases/latest" ) end
 		
 		local b = p:Add( "DButton" )
 		b:Dock( RIGHT )
@@ -1053,12 +1053,12 @@ hook.Add( "WorkshopEnd", "lf_addon_manager_wshook", function()
 	WorkshopReady = true
 end )
 
-http.Fetch( "https://raw.githubusercontent.com/LibertyForce-Gmod/Simple-Addon-Manager/master/VERSION.txt",
+http.Fetch( "https://raw.githubusercontent.com/IBRS-4Ever/Simple-Addon-Manager/master/VERSION.txt",
 	function( body, len, headers, code )
 		VersionLatest = body or Version
 		if VersionLatest != Version then
 			VersionNotify = true
-			print( "Simple Addon Manager "..Version.." - Successfully loaded. UPDATE TO VERSION "..VersionLatest.." AVAILABLE: https://github.com/LibertyForce-Gmod/Simple-Addon-Manager/releases/latest" )
+			print( "Simple Addon Manager "..Version.." - Successfully loaded. UPDATE TO VERSION "..VersionLatest.." AVAILABLE: https://github.com/IBRS-4Ever/Simple-Addon-Manager/releases/latest" )
 		else
 			print( "Simple Addon Manager "..Version.." - Successfully loaded. You are using the latest version." )
 		end
