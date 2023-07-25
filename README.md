@@ -11,7 +11,7 @@
 
 ### Quick Start Guide ###
 
-- [Download the latest release here.](https://github.com/LibertyForce-Gmod/Simple-Addon-Manager/releases/latest)
+- [Download the latest release here.](https://github.com/IBRS-4Ever/Simple-Addon-Manager/releases/latest)
 - Either extract the ZIP-Archive to your Garry's Mod main directory (where the HL2.exe file is located:
 _<your Steam dir>\SteamApps\common\GarrysMod_
 - You will be prompted to overwrite "menu.lua". Confirm with Yes.
