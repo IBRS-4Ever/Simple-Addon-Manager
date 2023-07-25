@@ -6,7 +6,7 @@ http://steamcommunity.com/id/libertyforce/
 
 --]]
 
-local Version = "2.0.0" -- REQUIRES UPDATING VERSION.TXT
+local Version = "2.1.0" -- REQUIRES UPDATING VERSION.TXT
 
 local VersionLatest
 local VersionNotify = false
@@ -73,7 +73,7 @@ local function InitAddons()
 			title = v.title
 		else
 			id = 0
-			title = "*** Manually installed GMA files ***"
+			title = "#SAM.ManuallyInstalledGMA"
 		end
 		
 		Addons[id] = {}
@@ -86,14 +86,14 @@ local function InitAddons()
 			for _, v in pairs( tbl ) do
 				for _, cat in pairs ( ValidTypes ) do
 					if v:lower() == cat:lower() then
-						Addons[id].cat = cat
+						Addons[id].cat = "#SAM.Type."..cat
 						found = true
 					end
 				end
 				if found then break end
 			end
 			if not found then
-				Addons[id].cat = "INVALID"
+				Addons[id].cat = "#SAM.INVALID"
 			end
 		end
 		
@@ -239,13 +239,13 @@ function Menu.Setup()
 		local t = p:Add( "DLabel" )
 		t:Dock( TOP )
 		t:SetFont( "DermaLarge" )
-		t:SetText( "Update available!" )
+		t:SetText( "#SAM.UpdateAvailable" )
 		t:SetDark( true )
 		t:SizeToContents()
 		
 		local t = p:Add( "DLabel" )
 		t:Dock( TOP )
-		t:SetText( "\nThere is an update to version "..VersionLatest.." available for Simple Addon Manager.\nTo get the latest version, please copy and paste the URL below to your browser:\n" )
+		t:SetText( string.format(language.GetPhrase("SAM.UpdateAvailableDesc"), VersionLatest) )
 		t:SetDark( true )
 		t:SizeToContents()
 		
@@ -260,7 +260,7 @@ function Menu.Setup()
 		b:DockMargin( 20, 10, 20, 0 )
 		b:SetWidth( 180 )
 		b:SetHeight( 20 )
-		b:SetText( "Copy URL to clipboard" )
+		b:SetText( "#SAM.CopyURL" )
 		b.DoClick = function() SetClipboardText( "https://github.com/LibertyForce-Gmod/Simple-Addon-Manager/releases/latest" ) end
 		
 		local b = p:Add( "DButton" )
@@ -268,7 +268,7 @@ function Menu.Setup()
 		b:DockMargin( 20, 10, 20, 0 )
 		b:SetWidth( 100 )
 		b:SetHeight( 20 )
-		b:SetText( "Close" )
+		b:SetText( "#SAM.Close" )
 		b.DoClick = function() f:Close() timer.Simple( 0, Menu.Setup ) end
 		
 		return
@@ -278,7 +278,7 @@ function Menu.Setup()
 	Menu.Frame = vgui.Create( "DFrame" )
 	local fw, fh = 900, math.Round( ScrH() * 83 / 100, 0 )
 	Menu.Frame:SetSize( fw, fh )
-	Menu.Frame:SetTitle( "Simple Addon Manager - Version "..Version.." - Created by LibertyForce" )
+	Menu.Frame:SetTitle( string.format(language.GetPhrase("SAM.Title"), Version) )
 	Menu.Frame:SetVisible( true )
 	Menu.Frame:SetDraggable( true )
 	Menu.Frame:SetScreenLock( false )
@@ -342,10 +342,10 @@ function Menu.Setup()
 		
 		if #table.GetKeys( Selected_Addons ) < 1 then return end
 		local count = #table.GetKeys( Selected_Addons )
-		local text1 = "Give a LIKE to ".. count .." selected addons?"
-		local text2 = "\nThis can not be undone.\n\nThank you for supporting the addon creators."
-		local b1_label = "Give LIKE"
-		local b2_label = "Cancel"
+		local text1 = string.format(language.GetPhrase("SAM.GiveLikeToXAddons"),count)
+		local text2 = "#SAM.GiveLikeToXAddonsDesc"
+		local b1_label = "#SAM.GiveLike"
+		local b2_label = "#SAM.Cancel"
 		
 		local f, b1, b2 = PopupConfirm( 350, 127, b1_label, b2_label, text1, text2 )
 		
@@ -364,11 +364,11 @@ function Menu.Setup()
 		
 		if #table.GetKeys( Selected_Addons ) < 1 then return end
 		local count = #table.GetKeys( Selected_Addons )
-		local header = "Warning! Uninstalling " .. count .. " addons"
-		local text1 = "\nDo you want to uninstall ".. count .." selected addons?"
-		local text2 = "\nThis can not be undone.\n\nIt is recommended to restart Garry's Mod after uninstalling addons."
-		local b1_label = "Confirm to uninstall"
-		local b2_label = "Cancel"
+		local header = string.format(language.GetPhrase("SAM.UninstallXAddons"),count)
+		local text1 = string.format(language.GetPhrase("SAM.UninstallXAddonsText1"),count)
+		local text2 = "#SAM.UninstallXAddonsText2"
+		local b1_label = "#SAM.ConfirmUninstall"
+		local b2_label = "#SAM.Cancel"
 		
 		local f, b1, b2, t1, t2, h = PopupConfirm( 450, 176, b1_label, b2_label, text1, text2, header )
 		
@@ -376,8 +376,8 @@ function Menu.Setup()
 		timer.Simple( 3, function() if IsValid( f ) then b1:SetEnabled( true ) end end )
 		
 		b1.DoClick = function()
-			h:SetText( "Uninstalling..." )
-			t1:SetText( "Please wait. This can take a while." )
+			h:SetText( "#SAM.Uninstalling" )
+			t1:SetText( "#SAM.UninstallingDesc" )
 			t2:SetText( "" )
 			b1:SetEnabled( false )
 			b2:SetEnabled( false )
@@ -478,7 +478,7 @@ function Menu.Setup()
 		t:Dock( TOP )
 		t:DockMargin( 0, 0, 0, 10 )
 		t:SetFont( "Font_AddonTitle" )
-		t:SetText( "Enter new name:" )
+		t:SetText( "#SAM.EnterNewName" )
 		t:SetDark( true )
 		t:SizeToContents()
 		
@@ -504,20 +504,20 @@ function Menu.Setup()
 		
 		b1:Dock( LEFT )
 		b1:SetWidth( 130 )
-		b1:SetText( "OK" )
+		b1:SetText( "#SAM.OK" )
 		b1.DoClick = Send
 		
 		b2:Dock( RIGHT )
 		b2:SetWidth( 130 )
-		b2:SetText( "Cancel" )
+		b2:SetText( "#SAM.Cancel" )
 		b2.DoClick = function() Menu.Frame:SetVisible( true ) f:Close() end
 	end
 	
 	local function AddonRemoveCustomnames()
-		local text1 = "Remove ALL custom names?"
-		local text2 = "\nThis can not be undone."
-		local b1_label = "Remove all"
-		local b2_label = "Cancel"
+		local text1 = "#SAM.RemoveAllText1"
+		local text2 = "#SAM.RemoveAllText2"
+		local b1_label = "#SAM.RemoveAll"
+		local b2_label = "#SAM.Cancel"
 		
 		local f, b1, b2 = PopupConfirm( 300, 101, b1_label, b2_label, text1, text2 )
 		
@@ -657,24 +657,24 @@ function Menu.Setup()
 			Menu.List[id].panel.DoRightClick = function()
 				local ContextMenu = Menu.List[id].panel:Add( "DMenu" )
 				
-				ContextMenu:AddOption( "Open Workshop", function()
+				ContextMenu:AddOption( "#SAM.OpenWorkshop", function()
 					gui.OpenURL( "https://steamcommunity.com/sharedfiles/filedetails/?id=" .. tostring( id ) )
 				end ):SetIcon( "icon16/world_go.png" )
-				ContextMenu:AddOption( "Copy URL", function()
+				ContextMenu:AddOption( "#SAM.CopyURLShort", function()
 					SetClipboardText( "https://steamcommunity.com/sharedfiles/filedetails/?id=" .. tostring( id ) )
 				end ):SetIcon( "icon16/page_link.png" )
-				ContextMenu:AddOption( "Copy ID", function()
+				ContextMenu:AddOption( "#SAM.CopyID", function()
 					SetClipboardText( tostring( id ) )
 				end ):SetIcon( "icon16/script_code.png" )
 				
 				ContextMenu:AddSpacer()
 				
-				ContextMenu:AddOption( "Add custom name", function()
+				ContextMenu:AddOption( "#SAM.AddCustomName", function()
 					AddonSetCustomname( id )
 				end ):SetIcon( "icon16/textfield_add.png" )
 				
 				if Addons[id].customname then
-					ContextMenu:AddOption( "Remove custom name", function()
+					ContextMenu:AddOption( "#SAM.RemoveCustomName", function()
 						Addons[id].customname = nil
 						GetAddons()
 					end ):SetIcon( "icon16/textfield_delete.png" )
@@ -846,7 +846,7 @@ function Menu.Setup()
 	local b = Menu.Top:Add( "DButton" )
 	b:SetPos( 10, row1 )
 	b:SetSize( 130, 20 )
-	b:SetText( "Undo Selection" )
+	b:SetText( "#SAM.UndoSelection" )
 	b.DoClick = function()
 		Selected_Addons = { }
 		last_selected = 1
@@ -857,7 +857,7 @@ function Menu.Setup()
 	local b = Menu.Top:Add( "DButton" )
 	b:SetPos( 10, row2 )
 	b:SetSize( 60, 20 )
-	b:SetText( "Select All" )
+	b:SetText( "#SAM.SelectAll" )
 	b.DoClick = function()
 		local DoSelect
 		for k, v in pairs( AddonsReadable ) do
@@ -883,7 +883,7 @@ function Menu.Setup()
 	Menu.NoSelectedAddons = Menu.Top:Add( "DLabel" )
 	function Menu.NoSelectedAddons.Count()
 		local No = tostring( #table.GetKeys( Selected_Addons ) )
-		Menu.NoSelectedAddons:SetText( No .. " selected" )
+		Menu.NoSelectedAddons:SetText( string.format(language.GetPhrase("SAM.XSelected"),No) )
 	end
 	Menu.NoSelectedAddons:SetPos( 75, row2 )
 	Menu.NoSelectedAddons:SetSize( 70, 20 )
@@ -894,12 +894,12 @@ function Menu.Setup()
 	c:SetPos( 150, row1 )
 	c:SetSize( 150, 20 )
 	c:SetSortItems( false )
-	c:SetValue( "Sort by Name" )
-	c:AddChoice( "Sort by Name" )
-	c:AddChoice( "Sort by Tag -> Name" )
-	c:AddChoice( "Sort by Enabled -> Name" )
-	c:AddChoice( "Sort by Enabled -> Tag" )
-	c:AddChoice( "Sort by ID" )
+	c:SetValue( "#SAM.SortByName" )
+	c:AddChoice( "#SAM.SortByName" )
+	c:AddChoice( "#SAM.SortByTag_Name" )
+	c:AddChoice( "#SAM.SortByEnabled_Name" )
+	c:AddChoice( "#SAM.SortByEnabled_Tag" )
+	c:AddChoice( "#SAM.SortByID" )
 	c.OnSelect = function( panel, index, value )
 		if index == 1 then SortType = 1
 		elseif index == 2 then SortType = 2
@@ -913,15 +913,15 @@ function Menu.Setup()
 	c:SetPos( 310, row1 )
 	c:SetSize( 150, 20 )
 	c:SetSortItems( false )
-	c:SetValue( "All Types" )
-	c:AddChoice( "All Types" )
+	c:SetValue( "#SAM.AllTypes" )
+	c:AddChoice( "#SAM.AllTypes" )
 	for _, cat in pairs( ValidTypes ) do
-		c:AddChoice( cat )
+		c:AddChoice( "#SAM.Type."..cat )
 	end
-	c:AddChoice( "Invalid category" )
+	c:AddChoice( "#SAM.InvalidCategory" )
 	c.OnSelect = function( panel, index, value )
 		if index == 1 then Selected_Cat = nil
-		elseif value == "Invalid category" then Selected_Cat = "INVALID"
+		elseif value == "#SAM.InvalidCategory" then Selected_Cat = "#SAM.INVALID"
 		else Selected_Cat = value end
 		Menu.Populate()
 	end
@@ -929,7 +929,7 @@ function Menu.Setup()
 	local t = Menu.Top:Add( "DLabel" )
 	t:SetPos( 155, row2 )
 	t:SetSize( 40, 20 )
-	t:SetText( "Search:" )
+	t:SetText( "#SAM.Search" )
 	t:SetDark( true )
 	
 	Menu.AddonFilter = Menu.Top:Add( "DTextEntry" )
@@ -948,43 +948,43 @@ function Menu.Setup()
 	local b = Menu.Top:Add( "DButton" )
 	b:SetPos( 480, row1 )
 	b:SetSize( 120, 20 )
-	b:SetText( "Enable Selected" )
+	b:SetText( "#SAM.EnableSelected" )
 	b.DoClick = function() AddonToggleSelected( true ) end
 	
 	local b = Menu.Top:Add( "DButton" )
 	b:SetPos( 480, row2 )
 	b:SetSize( 120, 20 )
-	b:SetText( "Disable Selected" )
+	b:SetText( "#SAM.DisableSelected" )
 	b.DoClick = function() AddonToggleSelected( false ) end
 	
 	local b = Menu.Top:Add( "DButton" )
 	b:SetPos( 620, row1 )
 	b:SetSize( 120, 20 )
-	b:SetText( "Enable by Tag" )
+	b:SetText( "#SAM.EnableByTag" )
 	b.DoClick = function() AddonToggleByTag( true ) end
 	
 	local b = Menu.Top:Add( "DButton" )
 	b:SetPos( 620, row2 )
 	b:SetSize( 120, 20 )
-	b:SetText( "Disable by Tag" )
+	b:SetText( "#SAM.DisableByTag" )
 	b.DoClick = function() AddonToggleByTag( false ) end
 	
 	local b = Menu.Top:Add( "DButton" )
 	b:SetPos( 760, row2 )
 	b:SetSize( 120, 20 )
-	b:SetText( "More" )
+	b:SetText( "#SAM.More" )
 	b:SetIsMenu( true ) -- Prevent Menu to autoclose (and therefore immediately reopen) if the button is clicked
 	local ContextMenu
 	b.DoClick = function()
 		if IsValid( ContextMenu ) then CloseDermaMenus() return end -- Menu open = Menu gets closed, won't run unless SetIsMenu
 		ContextMenu = Menu.MainPanel:Add( "DMenu" )
 		ContextMenu:SetPos( 690, row2 + 20 )
-		ContextMenu:AddOption( "Enable all", function() AddonToggleAll( true ) end ):SetIcon( "icon16/tick.png" )
-		ContextMenu:AddOption( "Disable all", function() AddonToggleAll( false ) end ):SetIcon( "icon16/cross.png" )
+		ContextMenu:AddOption( "#SAM.EnableAll", function() AddonToggleAll( true ) end ):SetIcon( "icon16/tick.png" )
+		ContextMenu:AddOption( "#SAM.DisableAll", function() AddonToggleAll( false ) end ):SetIcon( "icon16/cross.png" )
 		ContextMenu:AddSpacer():SetWide( 200 )
-		ContextMenu:AddOption( "Uninstall Selected", AddonDeleteSelected ):SetIcon( "icon16/bin.png" )
-		ContextMenu:AddOption( "Give LIKE to Selected", AddonLikeSelected ):SetIcon( "icon16/thumb_up.png" )
-		ContextMenu:AddOption( "Remove all custom names", AddonRemoveCustomnames ):SetIcon( "icon16/textfield_delete.png" )
+		ContextMenu:AddOption( "#SAM.UninstallSelected", AddonDeleteSelected ):SetIcon( "icon16/bin.png" )
+		ContextMenu:AddOption( "#SAM.LikeSelected", AddonLikeSelected ):SetIcon( "icon16/thumb_up.png" )
+		ContextMenu:AddOption( "#SAM.RemoveAllCustomNames", AddonRemoveCustomnames ):SetIcon( "icon16/textfield_delete.png" )
 		ContextMenu.OnClose = function() print( "TEST" ) end
 	end
 	
@@ -999,25 +999,25 @@ function Menu.Setup()
 	local b = Menu.RightTop:Add( "DButton" )
 	b:SetPos( 40, 30 )
 	b:SetSize( 100, 20 )
-	b:SetText( "Create new Tag" )
+	b:SetText( "#SAM.CreateNewTag" )
 	b.DoClick = Send
 	
 	local b = Menu.RightTop:Add( "DButton" )
 	b:SetPos( 0, 60 )
 	b:SetSize( 85, 20 )
-	b:SetText( "Add Tags" )
+	b:SetText( "#SAM.AddTags" )
 	b.DoClick = function() AddonChangeTags( true ) end
 	
 	local b = Menu.RightTop:Add( "DButton" )
 	b:SetPos( 95, 60 )
 	b:SetSize( 85, 20 )
-	b:SetText( "Remove Tags" )
+	b:SetText( "#SAM.RemoveTags" )
 	b.DoClick = function() AddonChangeTags( false ) end
 	
 	local b = Menu.RightTop:Add( "DButton" )
 	b:SetPos( 0, 90 )
 	b:SetSize( 60, 20 )
-	b:SetText( "Select All" )
+	b:SetText( "#SAM.SelectAll" )
 	b.DoClick = function()
 		if #TagList == #table.GetKeys( Selected_Tags ) then
 			for k, v in pairs( TagList ) do
@@ -1036,7 +1036,7 @@ function Menu.Setup()
 	Menu.NoSelectedTags = Menu.RightTop:Add( "DLabel" )
 	function Menu.NoSelectedTags.Count()
 		local No = tostring( #table.GetKeys( Selected_Tags ) )
-		Menu.NoSelectedTags:SetText( No .. " Tags selected" )
+		Menu.NoSelectedTags:SetText( string.format(language.GetPhrase("SAM.XTagSelected"),No) )
 	end
 	Menu.NoSelectedTags:SetPos( 70, 90 )
 	Menu.NoSelectedTags:SetSize( 110, 20 )
